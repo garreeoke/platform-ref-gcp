@@ -1,0 +1,11 @@
+apiVersion: platformref.upbound.io/v1alpha1
+kind: Cluster
+metadata:
+  name: platform-ref-gcp-torg
+spec:
+  id: platform-ref-gcp-torg
+  parameters:
+    nodes:
+      count: 1
+      size: small
+  cloud: gcp
