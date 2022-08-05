@@ -15,27 +15,24 @@ spec:
         metadata:
           annotations: #patched
         spec:
-          writeConnectionSecretToRef:
-            namespace: #patched
-            name: #patched
           forProvider:
             initialNodeCount: 1
             removeDefaultNodePool: true
             location: us-west2 # USER_INPUT?
             masterAuth:
-              # setting this master auth user name enables basic auth so that a client (e.g.,
-              # provider-helm), can connect with the generated kubeconfig from the connection secret
-              - username: admin
-                clientCertificateConfig:
+              - clientCertificateConfig:
                   - issueClientCertificate: true
-            masterAuthorizedNetworksConfig:
-              - enabled: false
+            #masterAuthorizedNetworksConfig:
+            #  - enabled: false
             ipAllocationPolicy:
               - useIpAliases: true
                 clusterSecondaryRangeName: pods
                 servicesSecondaryRangename: services
             loggingService: logging.googleapis.com/kubernetes
+            minMasterVersion: 1.22.11-gke.400
             monitoringService: monitoring.googleapis.com/kubernetes
+            releaseChannel:
+              - channel: UNSPECIFIED
             #addonsConfig:
             #  - gcePersistentDiskCsiDriverConfig:
             #    enabled: true
@@ -43,13 +40,13 @@ spec:
       patches:
         - fromFieldPath: metadata.annotations[crossplane.io/external-name]
           toFieldPath: metadata.annotations[crossplane.io/external-name]
-        - fromFieldPath: spec.id
+        - fromFieldPath: metadata.uid
           toFieldPath: spec.writeConnectionSecretToRef.name
           transforms:
             - type: string
               string:
                 fmt: "%s-gkecluster"
-        - fromFieldPath: spec.claim.namespace
+        - fromFieldPath: metadata.labels[crossplane.io/claim-namespace]
           toFieldPath: spec.writeConnectionSecretToRef.namespace
         # Create this cluster in the Network and Subnetwork referenced by network ID
         - fromFieldPath: "spec.id"
@@ -66,12 +63,9 @@ spec:
         spec:
           forProvider:
             location: us-west2
-            initialNodeCount: 1
             clusterSelector:
               # Attach this node pool to the GKECluster created above.
               matchControllerRef: true
-            #autoscaling:
-            #  - enabled: true
             nodeConfig:
               - diskType: pd-standard
                 diskSizeGb: 100
@@ -79,7 +73,8 @@ spec:
                   - https://www.googleapis.com/auth/cloud-platform
             management:
               - autoRepair: true
-                autoUpgrade: true
+                autoUpgrade: false
+            version: 1.22.10-gke.600 # Put version in CRD?
       name: kubernetesNodePool
       patches:
         - fromFieldPath: metadata.annotations[crossplane.io/external-name]
@@ -91,8 +86,8 @@ spec:
                 small: n1-standard-4
                 medium: n1-standard-16
                 large: n1-standard-32
-        - fromFieldPath: spec.parameters.nodes.count
-          toFieldPath: spec.forProvider.initialNodeCount
+        #- fromFieldPath: spec.parameters.nodes.count
+        #  toFieldPath: spec.forProvider.initialNodeCount
         - fromFieldPath: spec.parameters.nodes.count
           toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
         - fromFieldPath: spec.parameters.nodes.count
@@ -109,7 +104,7 @@ spec:
       patches:
         - fromFieldPath: spec.id
           toFieldPath: metadata.name
-        - fromFieldPath: spec.writeConnectionSecretToRef.namespace
+        - fromFieldPath: metadata.labels[crossplane.io/claim-namespace]
           toFieldPath: spec.credentials.secretRef.namespace
         - fromFieldPath: "metadata.uid"
           toFieldPath: spec.credentials.secretRef.name

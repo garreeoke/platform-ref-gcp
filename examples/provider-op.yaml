@@ -3,6 +3,8 @@ kind: Provider
 metadata:
   name: provider-gcp
 spec:
-  package: xpkg.upbound.io/upbound/provider-gcp:v0.5.0
+  #package: xpkg.upbound.io/upbound/provider-gcp:v0.5.0
+  package: xpkg.upbound.io/upbound/test-gke-kubeconfig:v0.5.0-21.gca0aa926.dirty
   packagePullSecrets:
-    - name: package-pull-secret
+    #- name: package-pull-secret
+    - name: package-pull-secret2
