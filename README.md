@@ -10,6 +10,10 @@ all composed using cloud service primitives from the [Crossplane GCP
 Provider](https://doc.crds.dev/github.com/crossplane/provider-gcp). App deployments can securely
 connect to the infrastructure they need using secrets distributed directly to the app namespace.
 
+# Quick Start
+1. [Install up cli](https://cloud.upbound.io/docs/cli/#install)
+1. 
+
 # Installing UXP on a Kubernetes Cluster
 
 The other option is installing UXP into a Kubernetes cluster you manage using `up`, which
