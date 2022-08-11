@@ -38,5 +38,13 @@ spec:
                 id:
                   type: string
                   description: ID of this Network that other objects will use to refer to it.
+                region:
+                  type: string
+                  description: Region
+                zone:
+                  type: string
+                  description: zone
               required:
                 - id
+                - region
+                - zone

@@ -4,8 +4,11 @@ metadata:
   name: platform-ref-gcp-torg
 spec:
   id: platform-ref-gcp-torg
+  zone: us-west2-a
+  region: us-west2
+  version: 1.22.11-gke.400
   parameters:
     nodes:
-      count: 1
+      count: 2
       size: small
   cloud: gcp

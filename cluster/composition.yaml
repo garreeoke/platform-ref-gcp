@@ -14,6 +14,10 @@ spec:
           matchLabels:
             cloud: gcp
       patches:
+        - fromFieldPath: spec.region
+          toFieldPath: spec.region
+        - fromFieldPath: spec.zone
+          toFieldPath: spec.zone
         - fromFieldPath: spec.id
           toFieldPath: spec.id
         - fromFieldPath: spec.cloud
@@ -27,6 +31,12 @@ spec:
             cloud: gcp # patched
       name: compositeK8s
       patches:
+        - fromFieldPath: spec.version
+          toFieldPath: spec.version
+        - fromFieldPath: spec.region
+          toFieldPath: spec.region
+        - fromFieldPath: spec.zone
+          toFieldPath: spec.zone
         - fromFieldPath: spec.id
           toFieldPath: spec.id
         - fromFieldPath: spec.cloud

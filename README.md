@@ -10,39 +10,7 @@ all composed using cloud service primitives from the [Crossplane GCP
 Provider](https://doc.crds.dev/github.com/crossplane/provider-gcp). App deployments can securely
 connect to the infrastructure they need using secrets distributed directly to the app namespace.
 
-## Quick Start
-
-### Platform Ops/SRE: Run your own internal cloud platform
-
-There are two ways to run Universal Crossplane:
-
-1. Hosted on Upbound Cloud
-1. Self-hosted on any Kubernetes cluster.
-
-To provision the GCP Reference platform, you can pick the option that is best for you. 
-
-We'll go through each option in the next sections.
-
-### Upbound Cloud Hosted UXP Control Plane
-
-Hosted Control planes are run on Upbound's cloud infrastructure and provide a restricted
-Kubernetes API endpoint that can be accessed via `kubectl` or CI/CD systems.
-
-#### Create a free account in Upbound Cloud
-
-1. Sign up for [Upbound Cloud](https://cloud.upbound.io/register).
-1. When you first create an Upbound Account, you can create an Organization
-
-#### Create a Hosted UXP Control Plane in Upbound Cloud
-
-1. Create a `Control Plane` in Upbound Cloud (e.g. dev, staging, or prod).
-1. Connect `kubectl` to your `Control Plane` instance.
-   * Click on your Control Plane
-   * Select the *Connect Using CLI*
-   * Paste the commands to configure your local `kubectl` context
-   * Test your connectivity by running `kubectl -n upbound-system get pods`
-
-#### Installing UXP on a Kubernetes Cluster
+# Installing UXP on a Kubernetes Cluster
 
 The other option is installing UXP into a Kubernetes cluster you manage using `up`, which
 is the official CLI for interacting with Upbound Cloud and Universal Crossplane (UXP).
@@ -115,18 +83,7 @@ Create the `ProviderConfig`, ensuring to set the `projectID` to your specific GC
 kubectl apply -f examples/provider-default-gcp.yaml
 ```
 
-#### Invite App Teams to you Organization in Upbound Cloud
-
-1. Create a Team `team1`.
-1. Invite app team members and grant access to `Control Planes` and `Repositories`.
-
 ### App Dev/Ops: Consume the infrastructure you need using kubectl
-
-#### Join your Organization in Upbound Cloud
-
-1. **Join** your [Upbound Cloud](https://cloud.upbound.io/register)
-   `Organization`
-1. Verify access to your team `Control Planes` and Registries
 
 #### Provision a Kubernetes cluster using kubectl
 
@@ -147,13 +104,6 @@ kubectl get managed
 ```console
 kubectl -n upbound-system get cluster
 ```
-
-#### View your Infrastructure on the Upbound Cloud Console
-
-1. Go to `Control Planes` for your organization.
-1. Click on your Control Plane.
-1. Click on `platform-ref-gcp` under Configurations section on the left.
-1. Check the composite resources and navigate between resource instances that were created for the claims we just created.
 
 ### Cleanup & Uninstall
 
@@ -242,7 +192,7 @@ kubectl crossplane install configuration ${PLATFORM_CONFIG}
 The cloud service primitives that can be used in a `Composition` today are
 listed in the Crossplane provider docs:
 
-* [Crossplane GCP Provider](https://doc.crds.dev/github.com/crossplane/provider-gcp)
+* [Upbound GCP Official Provider](https://marketplace.upbound.io/providers/upbound/provider-gcp)
 
 To learn more see [Configuration
 Packages](https://crossplane.io/docs/v0.14/getting-started/package-infrastructure.html).

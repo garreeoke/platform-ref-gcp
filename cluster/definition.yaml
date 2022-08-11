@@ -97,6 +97,15 @@ spec:
               cloud:
                 type: string
                 description: Cloud to provision to
+              region:
+                type: string
+                description: Region or location to use cloud dependent
+              zone:
+                type: string
+                description: add zone if needed
+              version:
+                type: string
+                description: valid version of k8s for the cloud provider
               parameters:
                 type: object
                 description: Cluster configuration parameters.
@@ -139,4 +148,6 @@ spec:
             required:
             - id
             - cloud
+            - region
+            - version
             - parameters

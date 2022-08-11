@@ -25,7 +25,7 @@ spec:
         kind: Subnetwork
         spec:
           forProvider:
-            region: us-west2
+            #region: us-west2
             networkSelector:
               matchControllerRef: true
             privateIpGoogleAccess: true
@@ -37,5 +37,7 @@ spec:
                 ipCidrRange: 10.204.0.0/16
           deletionPolicy: Delete
       patches:
+        - fromFieldPath: spec.region
+          toFieldPath: spec.forProvider.region
         - fromFieldPath: spec.id
           toFieldPath: metadata.labels[networks.gcp.platformref.crossplane.io/network-id]

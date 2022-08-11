@@ -18,10 +18,9 @@ spec:
           forProvider:
             initialNodeCount: 1
             removeDefaultNodePool: true
-            location: us-west2 # USER_INPUT?
-            masterAuth:
-              - clientCertificateConfig:
-                  - issueClientCertificate: true
+            #masterAuth:
+            #  - clientCertificateConfig:
+            #      - issueClientCertificate: true
             #masterAuthorizedNetworksConfig:
             #  - enabled: false
             ipAllocationPolicy:
@@ -29,15 +28,16 @@ spec:
                 clusterSecondaryRangeName: pods
                 servicesSecondaryRangename: services
             loggingService: logging.googleapis.com/kubernetes
-            minMasterVersion: 1.22.11-gke.400
+            #minMasterVersion: 1.22.11-gke.400
             monitoringService: monitoring.googleapis.com/kubernetes
             releaseChannel:
               - channel: UNSPECIFIED
-            #addonsConfig:
-            #  - gcePersistentDiskCsiDriverConfig:
-            #    enabled: true
       name: kubernetesCluster
       patches:
+        - fromFieldPath: spec.version
+          toFieldPath: spec.forProvider.minMasterVersion
+        - fromFieldPath: spec.zone
+          toFieldPath: spec.forProvider.location
         - fromFieldPath: metadata.annotations[crossplane.io/external-name]
           toFieldPath: metadata.annotations[crossplane.io/external-name]
         - fromFieldPath: metadata.uid
@@ -62,7 +62,7 @@ spec:
         kind: NodePool
         spec:
           forProvider:
-            location: us-west2
+            #location: us-west2
             clusterSelector:
               # Attach this node pool to the GKECluster created above.
               matchControllerRef: true
@@ -74,9 +74,13 @@ spec:
             management:
               - autoRepair: true
                 autoUpgrade: false
-            version: 1.22.10-gke.600 # Put version in CRD?
+            #version: 1.22.10-gke.600 # Put version in CRD?
       name: kubernetesNodePool
       patches:
+        - fromFieldPath: spec.version
+          toFieldPath: spec.forProvider.version
+        - fromFieldPath: spec.zone
+          toFieldPath: spec.forProvider.location
         - fromFieldPath: metadata.annotations[crossplane.io/external-name]
         - fromFieldPath: spec.parameters.nodes.size
           toFieldPath: spec.forProvider.nodeConfig[0].machineType
@@ -86,8 +90,8 @@ spec:
                 small: n1-standard-4
                 medium: n1-standard-16
                 large: n1-standard-32
-        #- fromFieldPath: spec.parameters.nodes.count
-        #  toFieldPath: spec.forProvider.initialNodeCount
+        - fromFieldPath: spec.parameters.nodes.count
+          toFieldPath: spec.forProvider.initialNodeCount
         - fromFieldPath: spec.parameters.nodes.count
           toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
         - fromFieldPath: spec.parameters.nodes.count
